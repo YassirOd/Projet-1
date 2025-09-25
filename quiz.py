@@ -10,11 +10,12 @@ class QuizJeu:
         self.questions = questions
         self.index_question = 0
         self.score = 0
-        self.streak = 0  # compteur de bonnes réponses consécutives
+        self.streak = 0
         self.en_attente = False
 
         self.canvas = tk.Canvas(root, width=600, height=600, bg="#f0ede9")
         self.canvas.pack()
+
 
         self.blocs = {
             "Haut-Gauche": self.canvas.create_rectangle(50, 50, 200, 150, fill="lightgreen"),
@@ -51,6 +52,18 @@ class QuizJeu:
         self.root.bind("<Down>", self.bas)
         self.root.bind("<Return>", self.question_suivante)
         self.root.bind("<space>", self.question_suivante)
+
+
+
+        self.texte_score = self.canvas.create_text(
+            300, 100,
+            text=f"SCORE",
+            font=("Impact", 15, "italic", ),
+            fill="Black"
+        )
+
+        self.canvas.tag_lower(self.texte_score)
+
 
     def afficher_question(self):
         q = self.questions[self.index_question]
@@ -103,7 +116,7 @@ class QuizJeu:
             self.score += points
             self.canvas.itemconfig(self.texte_feedback, text=f"Bonne réponse ! +{points} pts", fill="green")
             if self.streak >= 2:
-                self.canvas.itemconfig(self.flame, text="🔥")  # flamme visible
+                self.canvas.itemconfig(self.flame, text="🔥")
             else:
                 self.canvas.itemconfig(self.flame, text="")
         else:
@@ -115,6 +128,7 @@ class QuizJeu:
             self.streak = 0
             self.canvas.itemconfig(self.flame, text="")  # enlève flamme
         self.en_attente = True
+        self.canvas.itemconfig(self.texte_score, text=f"{self.score} points")
 
     def question_suivante(self, event=None):
         if not self.en_attente:
@@ -124,7 +138,7 @@ class QuizJeu:
             self.canvas.coords(self.balle, 280, 280, 320, 320)
             self.afficher_question()
         else:
-            self.canvas.itemconfig(self.texte_question, text=f"{self.pseudo} - Score final: {self.score}/{len(self.questions)*10}", fill="red")
+            self.canvas.itemconfig(self.texte_question, text=f"{self.pseudo} - Score final: {self.score} points", fill="red")
             for bloc in self.texte_reponses.values():
                 self.canvas.itemconfig(bloc, text="")
             self.canvas.itemconfig(self.texte_feedback, text="")

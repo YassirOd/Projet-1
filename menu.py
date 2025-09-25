@@ -5,8 +5,9 @@ class Menu:
     def __init__(self, root, pseudo=None, score=None):
         self.root = root
         self.root.title("Quiz")
-        self.root.geometry("800x600")  # 🔥 Fenêtre plus grande
+        self.root.geometry("800x600")
         self.root.resizable(False, False)
+
 
         # Canvas pour le fond
         self.canvas = tk.Canvas(root, width=800, height=600)
@@ -17,10 +18,11 @@ class Menu:
         self.canvas.create_text(400, 80, text="Bienvenue au Quiz",
                                 font=("Arial", 36, "bold"), fill="white")
 
+
         # Affichage du dernier score si disponible
         if pseudo and score is not None:
             self.canvas.create_text(400, 140,
-                text=f"Dernier score de {pseudo} : {score}",
+                text=f"Dernier score de {pseudo} : {score} points",
                 font=("Arial", 20, "bold"), fill="red")
 
         # Pseudo
