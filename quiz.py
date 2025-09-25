@@ -10,9 +10,10 @@ class QuizJeu:
         self.questions = questions
         self.index_question = 0
         self.score = 0
+        self.streak = 0  # compteur de bonnes réponses consécutives
         self.en_attente = False
 
-        self.canvas = tk.Canvas(root, width=600, height=600, bg="white")
+        self.canvas = tk.Canvas(root, width=600, height=600, bg="#f0ede9")
         self.canvas.pack()
 
         self.blocs = {
@@ -34,9 +35,13 @@ class QuizJeu:
         self.texte_feedback = self.canvas.create_text(300, 370, text="", font=("Arial", 12, "italic"), fill="darkblue")
         self.balle = self.canvas.create_oval(280, 280, 320, 320, fill="blue")
 
+        # Emoji flamme pour streak
+        self.flame = self.canvas.create_text(300, 500, text="", font=("Arial", 30), fill="orange")
+
         self.canvas.tag_lower(self.zone_question)
         self.canvas.tag_raise(self.texte_question)
         self.canvas.tag_raise(self.balle)
+        self.canvas.tag_lower(self.flame)
 
         self.afficher_question()
 
@@ -82,10 +87,33 @@ class QuizJeu:
     def verifier_reponse(self, bloc_nom):
         q = self.questions[self.index_question]
         if bloc_nom == q["bonne"]:
-            self.score += 1
-            self.canvas.itemconfig(self.texte_feedback, text="Bonne réponse", fill="green")
+            self.streak += 1
+            # streak actif seulement à partir de 2 bonnes réponses consécutives
+            points = 5
+            if self.streak == 2:
+                points = 6
+            elif self.streak == 3:
+                points = 7
+            elif self.streak == 4:
+                points = 8
+            elif self.streak == 5:
+                points = 9
+            elif self.streak >= 6:
+                points = 10
+            self.score += points
+            self.canvas.itemconfig(self.texte_feedback, text=f"Bonne réponse ! +{points} pts", fill="green")
+            if self.streak >= 2:
+                self.canvas.itemconfig(self.flame, text="🔥")  # flamme visible
+            else:
+                self.canvas.itemconfig(self.flame, text="")
         else:
-            self.canvas.itemconfig(self.texte_feedback, text="Mauvaise réponse", fill="red")
+            # mauvaise réponse
+            message = "Mauvaise réponse"
+            if self.streak >= 2:
+                message += ", fin du streak"
+            self.canvas.itemconfig(self.texte_feedback, text=message, fill="red")
+            self.streak = 0
+            self.canvas.itemconfig(self.flame, text="")  # enlève flamme
         self.en_attente = True
 
     def question_suivante(self, event=None):
@@ -96,10 +124,11 @@ class QuizJeu:
             self.canvas.coords(self.balle, 280, 280, 320, 320)
             self.afficher_question()
         else:
-            self.canvas.itemconfig(self.texte_question, text=f"{self.pseudo} - Score final: {self.score}/{len(self.questions)}")
+            self.canvas.itemconfig(self.texte_question, text=f"{self.pseudo} - Score final: {self.score}/{len(self.questions)*10}", fill="red")
             for bloc in self.texte_reponses.values():
                 self.canvas.itemconfig(bloc, text="")
             self.canvas.itemconfig(self.texte_feedback, text="")
+            self.canvas.itemconfig(self.flame, text="")
 
             self.bouton_menu = tk.Button(self.root, text="Menu", font=("Arial", 12, "bold"), bg="#4CAF50", fg="white", command=self.retour_menu)
             self.canvas.create_window(200, 400, window=self.bouton_menu, width=150, height=60)

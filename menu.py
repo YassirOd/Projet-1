@@ -5,39 +5,49 @@ class Menu:
     def __init__(self, root, pseudo=None, score=None):
         self.root = root
         self.root.title("Quiz")
-        self.root.geometry("500x400")
+        self.root.geometry("800x600")  # 🔥 Fenêtre plus grande
         self.root.resizable(False, False)
 
         # Canvas pour le fond
-        self.canvas = tk.Canvas(root, width=500, height=400)
+        self.canvas = tk.Canvas(root, width=800, height=600)
         self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_rectangle(0, 0, 500, 400, fill="#4C5B61", outline="")
+        self.canvas.create_rectangle(0, 0, 800, 600, fill="#4C5B61", outline="")
 
         # Titre
-        self.canvas.create_text(250, 50, text="Bienvenue au Quiz", font=("Arial", 24, "bold"), fill="white")
+        self.canvas.create_text(400, 80, text="Bienvenue au Quiz",
+                                font=("Arial", 36, "bold"), fill="white")
 
         # Affichage du dernier score si disponible
         if pseudo and score is not None:
-            self.canvas.create_text(250, 90,
+            self.canvas.create_text(400, 140,
                 text=f"Dernier score de {pseudo} : {score}",
-                font=("Arial", 14), fill="red")
+                font=("Arial", 20, "bold"), fill="red")
 
         # Pseudo
-        self.canvas.create_text(250, 130, text="Entrez votre pseudo :", font=("Arial", 14), fill="white")
-        self.pseudo_entry = tk.Entry(root, font=("Arial", 14), justify="center")
-        self.canvas.create_window(250, 160, window=self.pseudo_entry, width=200)
+        self.canvas.create_text(400, 220, text="Entrez votre pseudo :",
+                                font=("Arial", 20), fill="white")
+        self.pseudo_entry = tk.Entry(root, font=("Arial", 18), justify="center")
+        self.canvas.create_window(400, 260, window=self.pseudo_entry, width=300)
 
         # Bouton Lancer le quiz
-        start_btn = tk.Button(root, text="Lancer le Quiz", font=("Arial", 14, "bold"),
-                              bg="#FF6F61", fg="white", activebackground="#FF856D",
-                              activeforeground="white", command=self.lancer_quiz, relief="raised", bd=3)
-        self.canvas.create_window(250, 250, window=start_btn, width=200, height=50)
+        start_btn = tk.Button(root, text="Lancer le Quiz",
+                              font=("Arial", 18, "bold"),
+                              bg="#FF6F61", fg="white",
+                              activebackground="#FF856D",
+                              activeforeground="white",
+                              command=self.lancer_quiz,
+                              relief="raised", bd=4)
+        self.canvas.create_window(400, 360, window=start_btn, width=250, height=70)
 
         # Bouton Quitter
-        quit_btn = tk.Button(root, text="Quitter", font=("Arial", 12, "bold"),
-                             bg="#555555", fg="white", activebackground="#777777",
-                             activeforeground="white", command=root.destroy, relief="raised", bd=2)
-        self.canvas.create_window(250, 320, window=quit_btn, width=120, height=40)
+        quit_btn = tk.Button(root, text="Quitter",
+                             font=("Arial", 16, "bold"),
+                             bg="#555555", fg="white",
+                             activebackground="#777777",
+                             activeforeground="white",
+                             command=root.destroy,
+                             relief="raised", bd=3)
+        self.canvas.create_window(400, 460, window=quit_btn, width=180, height=60)
 
     def lancer_quiz(self):
         pseudo = self.pseudo_entry.get().strip()
