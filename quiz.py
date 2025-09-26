@@ -36,9 +36,7 @@ class QuizJeu:
         self.texte_feedback = self.canvas.create_text(300, 370, text="", font=("Arial", 12, "italic"))
         self.texte_suivant = self.canvas.create_text(300, 420, text="", font=("Arial", 9, "italic"), fill="grey")
         self.balle = self.canvas.create_oval(280, 280, 320, 320, fill="blue")
-
-        # Emoji flamme pour streak
-        self.flame = self.canvas.create_text(300, 500, text="", font=("Arial", 30), fill="orange")
+        self.flame = self.canvas.create_text(300, 500, text="", font=("Arial", 40), fill="orange")
 
         self.canvas.tag_lower(self.zone_question)
         self.canvas.tag_raise(self.texte_question)
@@ -148,6 +146,7 @@ class QuizJeu:
                 self.canvas.itemconfig(bloc, text="")
             self.canvas.itemconfig(self.texte_feedback, text="")
             self.canvas.itemconfig(self.flame, text="")
+            self.canvas.itemconfig(self.texte_suivant, text="")
 
             self.bouton_menu = tk.Button(self.root, text="Menu", font=("Arial", 12, "bold"), bg="#4CAF50", fg="white", command=self.retour_menu)
             self.canvas.create_window(200, 400, window=self.bouton_menu, width=150, height=60)
