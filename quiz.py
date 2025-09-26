@@ -36,7 +36,8 @@ class QuizJeu:
         self.texte_feedback = self.canvas.create_text(300, 370, text="", font=("Arial", 12, "italic"))
         self.texte_suivant = self.canvas.create_text(300, 420, text="", font=("Arial", 9, "italic"), fill="grey")
         self.balle = self.canvas.create_oval(280, 280, 320, 320, fill="blue")
-        self.flame = self.canvas.create_text(300, 500, text="", font=("Arial", 40), fill="orange")
+        self.flame = self.canvas.create_text(300, 500, text="", font=("Arial", 30), fill="orange")
+        self.texte_streak = self.canvas.create_text(320, 520, text="", font=("Impact", 9, "italic"),fill="orange")
 
         self.canvas.tag_lower(self.zone_question)
         self.canvas.tag_raise(self.texte_question)
@@ -110,19 +111,26 @@ class QuizJeu:
             if self.streak == 2:
                 points = 6
             elif self.streak == 3:
+                self.canvas.itemconfig(self.texte_streak, text="+2")
                 points = 7
             elif self.streak == 4:
+                self.canvas.itemconfig(self.texte_streak, text="+3")
                 points = 8
             elif self.streak == 5:
+                self.canvas.itemconfig(self.texte_streak, text="+4")
                 points = 9
             elif self.streak >= 6:
+                self.canvas.itemconfig(self.texte_streak, text="+5")
+                self.canvas.itemconfig(self.balle, fill="orange")
                 points = 10
-            self.score += points
-            self.canvas.itemconfig(self.texte_feedback, text=f"Bonne réponse ! +{points} pts", fill="green")
+
             if self.streak >= 2:
                 self.canvas.itemconfig(self.flame, text="🔥")
             else:
                 self.canvas.itemconfig(self.flame, text="")
+            self.score += points
+            self.canvas.itemconfig(self.texte_feedback, text=f"Bonne réponse ! +{points} pts", fill="green")
+
         else:
             # mauvaise réponse
             message = "Mauvaise réponse"
@@ -131,6 +139,8 @@ class QuizJeu:
             self.canvas.itemconfig(self.texte_feedback, text=message, fill="red")
             self.streak = 0
             self.canvas.itemconfig(self.flame, text="")  # enlève flamme
+            self.canvas.itemconfig(self.balle, fill="blue")
+            self.canvas.itemconfig(self.texte_streak, text="")
 
         self.canvas.itemconfig(self.texte_suivant,
                                text=f"Appuyez sur ESPACE ou ENTRÉE pour passer à la question suivante.")
@@ -174,6 +184,7 @@ def charger_questions(fichier_csv):
     return questions
 
 if __name__ == "__main__":
+    # Par défaut lance le quiz facile si on ne passe pas par le menu
     questions = charger_questions("qst_facile.csv")
     root = tk.Tk()
     app = QuizJeu(root, questions)
