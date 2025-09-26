@@ -33,7 +33,8 @@ class QuizJeu:
 
         self.zone_question = self.canvas.create_rectangle(150, 250, 450, 350, fill="lightgrey")
         self.texte_question = self.canvas.create_text(300, 300, text="", font=("Arial", 14, "bold"), width=250)
-        self.texte_feedback = self.canvas.create_text(300, 370, text="", font=("Arial", 12, "italic"), fill="darkblue")
+        self.texte_feedback = self.canvas.create_text(300, 370, text="", font=("Arial", 12, "italic"))
+        self.texte_suivant = self.canvas.create_text(300, 420, text="", font=("Arial", 9, "italic"), fill="grey")
         self.balle = self.canvas.create_oval(280, 280, 320, 320, fill="blue")
 
         # Emoji flamme pour streak
@@ -69,6 +70,7 @@ class QuizJeu:
         q = self.questions[self.index_question]
         self.canvas.itemconfig(self.texte_question, text=q["question"])
         self.canvas.itemconfig(self.texte_feedback, text="")
+        self.canvas.itemconfig(self.texte_suivant, text="")
         reponses = [q["reponse1"], q["reponse2"], q["reponse3"], q["reponse4"]]
         for bloc, texte in zip(self.texte_reponses.keys(), reponses):
             self.canvas.itemconfig(self.texte_reponses[bloc], text=texte)
@@ -127,6 +129,9 @@ class QuizJeu:
             self.canvas.itemconfig(self.texte_feedback, text=message, fill="red")
             self.streak = 0
             self.canvas.itemconfig(self.flame, text="")  # enlève flamme
+
+        self.canvas.itemconfig(self.texte_suivant,
+                               text=f"Appuyez sur ESPACE ou ENTRÉE pour passer à la question suivante.")
         self.en_attente = True
         self.canvas.itemconfig(self.texte_score, text=f"{self.score} points")
 
