@@ -49,6 +49,10 @@ class QuizJeu:
         self.root.bind("<Right>", self.droite)
         self.root.bind("<Up>", self.haut)
         self.root.bind("<Down>", self.bas)
+        self.root.bind("<a>", self.gauche)
+        self.root.bind("<d>", self.droite)
+        self.root.bind("<w>", self.haut)
+        self.root.bind("<s>", self.bas)
         self.root.bind("<Return>", self.question_suivante)
         self.root.bind("<space>", self.question_suivante)
 
@@ -75,13 +79,13 @@ class QuizJeu:
         self.en_attente = False
 
     def gauche(self, event):
-        if not self.en_attente: self.deplacer(-20, 0)
+        if not self.en_attente: self.deplacer(-25, 0)
     def droite(self, event):
-        if not self.en_attente: self.deplacer(20, 0)
+        if not self.en_attente: self.deplacer(25, 0)
     def haut(self, event):
-        if not self.en_attente: self.deplacer(0, -20)
+        if not self.en_attente: self.deplacer(0, -25)
     def bas(self, event):
-        if not self.en_attente: self.deplacer(0, 20)
+        if not self.en_attente: self.deplacer(0, 25)
 
     def deplacer(self, dx, dy):
         self.canvas.move(self.balle, dx, dy)
@@ -170,7 +174,7 @@ def charger_questions(fichier_csv):
     return questions
 
 if __name__ == "__main__":
-    questions = charger_questions("questions.csv")
+    questions = charger_questions("qst_facile.csv")
     root = tk.Tk()
     app = QuizJeu(root, questions)
     root.mainloop()
