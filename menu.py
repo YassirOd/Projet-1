@@ -8,7 +8,6 @@ class Menu:
         self.root.geometry("800x600")
         self.root.resizable(False, False)
 
-        # Canvas pour le fond
         self.canvas = tk.Canvas(root, width=800, height=600)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_rectangle(0, 0, 800, 600, fill="#4C5B61", outline="")
@@ -17,7 +16,7 @@ class Menu:
         self.canvas.create_text(400, 80, text="Bienvenue au Quiz",
                                 font=("Arial", 36, "bold"), fill="white")
 
-        # Affichage du dernier score si disponible
+        # Affichage du dernier score
         if pseudo and score is not None:
             self.canvas.create_text(400, 140,
                 text=f"Dernier score de {pseudo} : {score} points",
@@ -43,7 +42,7 @@ class Menu:
             self.canvas.create_window(400, y, window=rb)
             y += 30
 
-        # Bouton Lancer le quiz
+        # Bouton Lancer quiz
         start_btn = tk.Button(root, text="Lancer le Quiz",
                               font=("Arial", 18, "bold"),
                               bg="#FF6F61", fg="white",
@@ -68,7 +67,7 @@ class Menu:
         if not pseudo:
             pseudo = "Joueur"
 
-        # Choisir le fichier CSV en fonction du niveau
+        # choisir le fichier csv en fonction du niveau
         niveau = self.difficulty_var.get()
         if niveau == "facile":
             fichier = "qst_facile.csv"
